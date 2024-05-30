@@ -1,14 +1,18 @@
-import pyautogui
-import time
-import os
-from PIL import Image
-import datetime
-import img2pdf
 import argparse
+import datetime
+import os
 import shutil
+import time
+
+import img2pdf
+import pyautogui
+from PIL import Image
+
 
 class PDFCreator:
-    def __init__(self, output_dir="output", pdf_name="output.pdf", page=5, direction="right"):
+    def __init__(
+        self, output_dir="output", pdf_name="output.pdf", page=5, direction="right"
+    ):
         self.output_dir = output_dir
         self.pdf_name = pdf_name
         self.page = page
@@ -44,8 +48,8 @@ class PDFCreator:
         image_list = []
         for image_path in self.image_paths:
             image = Image.open(image_path)
-            jpg_image_path = image_path[:-3] + 'jpg'
-            image.convert('RGB').save(jpg_image_path)
+            jpg_image_path = image_path[:-3] + "jpg"
+            image.convert("RGB").save(jpg_image_path)
             image_list.append(jpg_image_path)
         return image_list
 
@@ -63,13 +67,24 @@ class PDFCreator:
         self.create_pdf(image_list)
         self.remove_temp_dir()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     default_pdf_name = f"output_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
     parser = argparse.ArgumentParser()
-    parser.add_argument("-n", "--pdf_name", type=str, default=default_pdf_name, help="Name of PDF file")
+    parser.add_argument(
+        "-n", "--pdf_name", type=str, default=default_pdf_name, help="Name of PDF file"
+    )
     parser.add_argument("-p", "--page", type=int, default=5, help="Number of pages")
-    parser.add_argument("-d", "--direction", type=str, default="right", help="Direction of page ('left' or 'right')")
+    parser.add_argument(
+        "-d",
+        "--direction",
+        type=str,
+        default="right",
+        help="Direction of page ('left' or 'right')",
+    )
     args = parser.parse_args()
 
-    pdf_creator = PDFCreator(pdf_name=args.pdf_name, page=args.page, direction=args.direction)
+    pdf_creator = PDFCreator(
+        pdf_name=args.pdf_name, page=args.page, direction=args.direction
+    )
     pdf_creator.run()
